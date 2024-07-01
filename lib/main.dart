@@ -3,9 +3,12 @@ import 'package:get/get.dart';
 import 'src/core/constant/app_size.dart';
 import 'src/core/constant/app_string.dart';
 import 'src/core/constant/app_theme.dart';
+import 'src/core/service/initial_service.dart';
 import 'src/routeurs/routeurs.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initialServices();
   runApp(const MyApp());
 }
 
