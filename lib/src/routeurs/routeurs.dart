@@ -5,5 +5,5 @@ import 'package:get/get.dart';
 
 List<GetPage<dynamic>>? routers = [
   GetPage(name: AppRoute.splash, page: () => const SplashScreen()),
-  GetPage(name: AppRoute.onboarding, page: () => const OnboardingScreen()),
+  GetPage(name: AppRoute.onboarding, page: () => const OnboardingScreen ()),
 ];
