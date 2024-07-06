@@ -1,8 +1,7 @@
+import 'package:babysitter_v1/src/core/constant/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:babysitter_v1/src/view/screens/espacescreen/espacescreen.dart';
-import 'package:babysitter_v1/src/core/cache/app_cache.dart';
-
+import 'package:babysitter_v1/src/core/constant/app_cache.dart';
 import '../../../data/datasource/onboard.dart';
 
 class OnboardingController extends GetxController {
@@ -24,7 +23,7 @@ class OnboardingController extends GetxController {
   void skipPage() {
     _pageController.animateToPage(
       onboardedList.length - 1,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.ease,
     );
     _currentPage++;
@@ -32,16 +31,13 @@ class OnboardingController extends GetxController {
   }
 
   void navigateToPage(BuildContext context) {
-    if (_currentPage < onboardedList.length - 1) {
+    if (!isLastPage()) {
       _pageController.nextPage(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         curve: Curves.ease,
       );
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => EspaceScreen()),
-      );
+      Get.offAllNamed(AppRoute.espace);
       AppCache().setOnboarded(true);
     }
   }

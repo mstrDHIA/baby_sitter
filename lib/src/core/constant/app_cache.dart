@@ -2,13 +2,13 @@ import 'package:babysitter_v1/main.dart';
 
 class AppCache {
   AppCache();
-  String _onboardedKey = "ONBOARDED_KEY";
-  String _isCompleteProfile = "IS_COMPLETE_PROFILE";
-  String _uid = "UID";
-  String _isVerified = "VERIFIED";
-  String _role = "ROLE";
-  String _soin = "SOIN";
-  String _besoin = "BESOIN";
+  final String _onboardedKey = "ONBOARDED_KEY";
+  final String _isCompleteProfile = "IS_COMPLETE_PROFILE";
+  final String _uid = "UID";
+  final String _isVerified = "VERIFIED";
+  final String _role = "ROLE";
+  final String _soin = "SOIN";
+  final String _besoin = "BESOIN";
 
   // ONBOARDED
   Future<void> setOnboarded(bool value) async =>

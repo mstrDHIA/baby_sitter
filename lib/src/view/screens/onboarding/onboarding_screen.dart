@@ -1,4 +1,5 @@
 import 'package:babysitter_v1/src/core/constant/app_color.dart';
+import 'package:babysitter_v1/src/core/constant/app_font.dart';
 import 'package:babysitter_v1/src/core/constant/app_size.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,13 +43,12 @@ class OnboardingScreen extends StatelessWidget {
             child: Container(
               height: AppSize.screenHeight! * .45,
               width: AppSize.screenWidth,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(27),
-                  topRight: Radius.circular(27),
-                ),
+                    topLeft: Radius.circular(27),
+                    topRight: Radius.circular(27)),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -56,38 +56,43 @@ class OnboardingScreen extends StatelessWidget {
                 children: [
                   GetBuilder<OnboardingController>(
                     builder: (controller) => Text(
-                      onboardedList[controller.currentPage].title.toUpperCase(),
-                      style: onboardedList[controller.currentPage].titleStyle,
-                    ),
+                        onboardedList[controller.currentPage]
+                            .title
+                            .toUpperCase(),
+                        style: Get.textTheme.headlineLarge),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   GetBuilder<OnboardingController>(
                     builder: (controller) => Container(
                       width: 305,
-                      margin: EdgeInsets.only(left: 9),
+                      margin: const EdgeInsets.only(left: 9),
                       child: Text(
                         onboardedList[controller.currentPage].description,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.center,
-                        style: onboardedList[controller.currentPage].descriptionStyle,
+                        style: Get.textTheme.bodyLarge!.copyWith(
+                          fontWeight: FontWeight.w400,
+                          fontFamily: AppFont.poppins,
+                          color: AppColor.blueGray300,
+                        ),
                       ),
                     ),
                   ),
-                  SizedBox(height: 35),
+                  const SizedBox(height: 35),
                   CustomTextButton(
                     text: "Next",
                     onPressed: () => controller.navigateToPage(context),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
                       onboardedList.length,
                       (index) => GetBuilder<OnboardingController>(
                         builder: (controller) => AnimatedContainer(
-                          duration: Duration(milliseconds: 500),
-                          margin: EdgeInsets.all(5),
+                          duration: const Duration(milliseconds: 500),
+                          margin: const EdgeInsets.all(5),
                           height: 10,
                           width: controller.currentPage == index ? 50 : 10,
                           decoration: BoxDecoration(
@@ -107,10 +112,10 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                   GetBuilder<OnboardingController>(
                     builder: (controller) => controller.isLastPage()
-                        ? SizedBox()
+                        ? const SizedBox()
                         : InkWell(
                             onTap: () => controller.skipPage(),
-                            child: Text("Skip"),
+                            child: const Text("Skip"),
                           ),
                   ),
                 ],
@@ -119,43 +124,6 @@ class OnboardingScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class OnboardingModel extends StatelessWidget {
-  final String image;
-  final String title;
-  final String description;
-  final TextStyle? titleStyle;
-  final TextStyle? descriptionStyle;
-
-  OnboardingModel({
-    required this.image,
-    required this.title,
-    required this.description,
-    this.titleStyle,
-    this.descriptionStyle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Image.asset(image),
-        SizedBox(height: 20),
-        Text(
-          title,
-          style: titleStyle ?? DefaultTextStyle.of(context).style,
-        ),
-        SizedBox(height: 10),
-        Text(
-          description,
-          style: descriptionStyle ?? DefaultTextStyle.of(context).style,
-          textAlign: TextAlign.center,
-        ),
-      ],
     );
   }
 }

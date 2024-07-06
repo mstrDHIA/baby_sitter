@@ -1,10 +1,12 @@
+import 'package:babysitter_v1/src/core/constant/app_font.dart';
 import 'package:flutter/material.dart';
 import 'package:babysitter_v1/src/core/constant/app_image.dart';
 import 'package:babysitter_v1/src/core/constant/app_color.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class LogoTextCard extends StatelessWidget {
-  const LogoTextCard({Key? key, this.text}) : super(key: key);
+  const LogoTextCard({super.key, this.text});
 
   final String? text;
 
@@ -14,19 +16,18 @@ class LogoTextCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CustomImageView(
-            imagePath: AppImage.imgSettings, height: 60, width: 60),
-        SizedBox(height: 15),
+        SvgPicture.asset(AppImage.imgSettings, height: 60, width: 60),
+        const SizedBox(height: 15),
         Text(
           text ?? "Prendre soin des petits sourires !",
-          style: TextStyle(
-            color: PrimaryColors().redA200,
-            fontFamily: "Futura PT",
+          style: Get.textTheme.bodyLarge!.copyWith(
+            color: AppColor.red400,
+            fontFamily: AppFont.futuraPT,
             fontSize: 13,
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(height: 30),
+        const SizedBox(height: 30),
       ],
     );
   }

@@ -1,22 +1,20 @@
-
 import 'package:flutter/material.dart';
-
 
 import 'package:babysitter_v1/src/core/constant/app_color.dart';
 
 class AuthInput extends StatelessWidget {
-  const AuthInput(
-      {Key? key,
-      required this.hintText,
-      required this.controller,
-      this.suffix,
-      this.keyboardType,
-      this.validator,
-      this.obscure,
-      this.readOnly,
-      this.maxLines,
-      this.isSecond})
-      : super(key: key);
+  const AuthInput({
+    super.key,
+    required this.hintText,
+    required this.controller,
+    this.suffix,
+    this.keyboardType,
+    this.validator,
+    this.obscure,
+    this.readOnly,
+    this.maxLines,
+    this.isSecond,
+  });
 
   final String hintText;
   final TextEditingController controller;
@@ -38,53 +36,53 @@ class AuthInput extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: validator,
       obscureText: obscure ?? false,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w500,
         fontFamily: "Poppins",
-        color: PrimaryColors().blueGray90003,
+        color: AppColor.blueGray900,
       ),
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
           fontFamily: "Poppins",
-          color: PrimaryColors().blueGray300,
+          color: AppColor.blueGray300,
         ),
-        errorStyle: TextStyle(
+        errorStyle: const TextStyle(
           fontSize: 11,
           fontWeight: FontWeight.w500,
           fontFamily: "Poppins",
-          color: PrimaryColors().red400,
+          color: AppColor.red400,
         ),
         contentPadding:
             EdgeInsets.all(isSecond == null || isSecond == false ? 17 : 12),
         fillColor: isSecond == null || isSecond == false
-            ? PrimaryColors().whiteA700
+            ? AppColor.white
             : Colors.grey[200],
         filled: true,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
               isSecond == null || isSecond == false ? 10 : 5),
-          borderSide: BorderSide(color: PrimaryColors().blueGray10001),
+          borderSide: const BorderSide(color: AppColor.blueGray100),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
               isSecond == null || isSecond == false ? 10 : 5),
-          borderSide: BorderSide(color: PrimaryColors().blueGray10001),
+          borderSide: const BorderSide(color: AppColor.blueGray100),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
               isSecond == null || isSecond == false ? 10 : 5),
-          borderSide: BorderSide(color: PrimaryColors().blueGray300),
+          borderSide: const BorderSide(color: AppColor.blueGray100),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
               isSecond == null || isSecond == false ? 10 : 5),
-          borderSide: BorderSide(color: PrimaryColors().red400, width: 1),
+          borderSide: const BorderSide(color: AppColor.red400, width: 1),
         ),
-        suffixIcon: suffix ?? SizedBox(),
+        suffixIcon: suffix ?? const SizedBox(),
       ),
     );
   }
