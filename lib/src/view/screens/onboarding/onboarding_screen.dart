@@ -3,7 +3,7 @@ import 'package:babysitter_v1/src/core/constant/app_size.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:babysitter_v1/src/view/controllers/onboarding/onboarding_controller.dart';
-import '../../../../widget/custom_outlined_button.dart';
+import '../widget/custom_outlined_button.dart';
 import '../../../data/datasource/onboard.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -77,7 +77,7 @@ class OnboardingScreen extends StatelessWidget {
                   SizedBox(height: 35),
                   CustomTextButton(
                     text: "Next",
-                    onPressed: () => controller.navigateToPage(context),
+                    onTap:  () => controller.navigateToPage(context),
                   ),
                   SizedBox(height: 20),
                   Row(

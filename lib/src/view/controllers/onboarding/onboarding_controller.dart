@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:babysitter_v1/src/view/screens/espacescreen/espacescreen.dart';
+import 'package:babysitter_v1/src/view/screens/espacescreen/espace_screen.dart';
 import 'package:babysitter_v1/src/core/cache/app_cache.dart';
 
 import '../../../data/datasource/onboard.dart';

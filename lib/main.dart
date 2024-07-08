@@ -28,17 +28,15 @@ class MyRealtimeClientOptions {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
+  
   sharedPref = await SharedPreferences.getInstance();
   timeago.setLocaleMessages('fr', timeago.FrMessages());
   await initialServices();
+  await dotenv.load(fileName: ".env");
   await Supabase.initialize(
-    url: dotenv.get("SUPABASE_URL"),
-    anonKey: dotenv.get("SUPABASE_ANON_KEY"),
-    realtimeClientOptions: const MyRealtimeClientOptions(
-      eventsPerSecond: 2,
-    ) as RealtimeClientOptions, // Cast to RealtimeClientOptions
-  );
+   url: dotenv.get("SUPABASE_URL"),
+    anonKey: dotenv.get("SUPABASE_ANON_KEY")
+ );
   runApp(const MyApp());
 }
 

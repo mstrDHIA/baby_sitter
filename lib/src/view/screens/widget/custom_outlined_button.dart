@@ -14,6 +14,7 @@ class CustomTextButton extends StatelessWidget {
   final Widget? leftIcon;
   final Widget? rightIcon;
   final Widget? label;
+  final VoidCallback onTap; // Ajout de onTap ici
 
   CustomTextButton({
     Key? key,
@@ -30,6 +31,7 @@ class CustomTextButton extends StatelessWidget {
     this.leftIcon,
     this.rightIcon,
     this.label,
+    required this.onTap, // Ajout de required ici
   }) : super(key: key);
 
   @override
@@ -54,7 +56,7 @@ class CustomTextButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(0),
               ),
             ),
-        onPressed: isDisabled ?? false ? null : onPressed,
+        onPressed: isDisabled ?? false ? null : onTap, // Utilisation de onTap ici
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
