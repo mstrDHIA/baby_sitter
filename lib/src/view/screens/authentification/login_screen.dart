@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/constant/app_route.dart';
 import '../../../core/functions/valid_input.dart';
 import '../widget/custom_outlined_button.dart';
@@ -22,15 +23,22 @@ class LoginScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
           child: Form(
             key: controller.formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Center(
-                    child: LogoTextCard(text: "Caring for Little Smiles!")),
-                const Center(child: Text("Se connecter")),
+                const Center(child: LogoTextCard(text: "Caring for Little Smiles!")),
+                const SizedBox(height: 10),
+                const Text(
+                  "Se Connecter",
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
                 const SizedBox(height: 10),
                 const AuthDescription(
                   "Cette étape est appropriée pour sélectionner votre propre espace.",
@@ -40,7 +48,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 GetBuilder<LoginController>(
                   builder: (controller) => AuthInput(
-                    hintText: "e.g. john@mail.com",
+                    hintText: "youremail@gmail.com",
                     controller: controller.emailController,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) => validInput(value!, 6, 50, "email"),
@@ -52,7 +60,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 GetBuilder<LoginController>(
                   builder: (controller) => AuthInput(
-                    hintText: "e.g. *********",
+                    hintText: "************",
                     controller: controller.passwordController,
                     validator: (value) => validInput(value!, 4, 25, "password"),
                     obscure: !controller.isShowPassword.value,
@@ -68,7 +76,7 @@ class LoginScreen extends StatelessWidget {
                 const SizedBox(height: 25),
                 GetBuilder<LoginController>(
                   builder: (controller) => PrimaryButton(
-                    name: "Se connecter",
+                    name: "Se Connecter",
                     onPressed: () {
                       if (!controller.isLoading.value) {
                         controller.login();
@@ -85,42 +93,72 @@ class LoginScreen extends StatelessWidget {
                       Get.toNamed(AppRoute.forget);
                     },
                     child: const Text(
-                      "Forgot password ?",
+                      "Mot de passe oublié?",
                       style: TextStyle(
-                        color: Color.fromARGB(255, 50, 50, 50),
+                        color: Colors.grey,
                         decoration: TextDecoration.underline,
                       ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 30),
                 Center(
-                  child: TextButton(
-                    onPressed: () {
-                      // Replace with your Google Sign-In logic
-                    },
-                    child: Text(
-                      "ou continuer avec",
-                      style: TextStyle(color: AppColor.blueGray255),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextButton(
-                  onPressed: () {
-                    controller.signInWithGoogle();
-                  },
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
+                  child: Column(
                     children: [
-                      Image.asset(
-                        'assets/icons/google_icon.png', // chemin de l'icône Google
-                        height: 20.0,
+                      const Text(
+                        "Ou continuer avec",
+                        style: TextStyle(color: Colors.black54),
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        "Google",
-                        style: TextStyle(color: AppColor.blueGray255),
+                      const SizedBox(height: 20),
+                      OutlinedButton(
+                        onPressed: () {
+                          controller.signInWithGoogle();
+                        },
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Colors.black12),
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                           minimumSize: Size(MediaQuery.of(context).size.width, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            FaIcon(FontAwesomeIcons.google, color: AppColor.blueGray255),
+                            const SizedBox(width: 10),
+                            const Text(
+                              "Google",
+                              style: TextStyle(color: AppColor.blueGray255),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      OutlinedButton(
+                        onPressed: () {
+                          // Add Facebook sign-in logic here
+                        },
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          side: const BorderSide(color: AppColor.blueGray255),
+                          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 60),
+                          minimumSize: Size(MediaQuery.of(context).size.width, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            FaIcon(FontAwesomeIcons.facebook, color:  AppColor.white),
+                            const SizedBox(width: 10),
+                            const Text(
+                              "Facebook",
+                              style: TextStyle(color:AppColor.white),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),

@@ -1,11 +1,10 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
-
 class VerificationController extends GetxController {
   var isLoading = false;
-  var countdown = 60;
-  TextEditingController codeController = TextEditingController();
+  var countdown = 90;
+  final List<TextEditingController> codeControllers = List.generate(5, (_) => TextEditingController());
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -27,7 +26,7 @@ class VerificationController extends GetxController {
   }
 
   void resendCode() {
-    countdown = 60;
+    countdown = 90;
     update();
     startCountdown();
     // Ajoutez ici la logique pour renvoyer le code
@@ -42,8 +41,16 @@ class VerificationController extends GetxController {
         isLoading = false;
         update(); // Notify listeners to update the UI
         // Supposons que le code est vérifié avec succès
-        //Get.toNamed(AppRoute.nextScreen); // Redirige vers l'écran suivant
+        // Get.toNamed(AppRoute.nextScreen); // Redirige vers l'écran suivant
       });
     }
+  }
+
+  @override
+  void onClose() {
+    for (var controller in codeControllers) {
+      controller.dispose();
+    }
+    super.onClose();
   }
 }

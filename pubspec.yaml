@@ -31,7 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   flutter:
     sdk: flutter
-  flutter_icons: ^1.1.0
+  font_awesome_flutter: ^10.1.0
   intl_phone_number_input: ^0.7.0+2
   google_sign_in: ^5.2.1
   cached_network_image: ^3.2.3

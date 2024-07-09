@@ -3,7 +3,7 @@ class AppImage {
   static const String rootPath = 'assets/images';
 
   // Logo
-  static const String logo = '$rootPath/logo/logo.svg';
+  static const String logo = '$rootPath/logo/logo1.svg';
   // onboartd
   static const String onboard1 = '$rootPath/img/img1.png';
   static const String onboard2 = '$rootPath/img/img2.png';
