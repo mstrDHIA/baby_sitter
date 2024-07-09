@@ -1,13 +1,14 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:babysitter_v1/src/core/cache/app_cache.dart';
+
 import 'package:babysitter_v1/src/core/functions/show_snack_bar.dart';
 import 'package:babysitter_v1/src/core/constant/appDB.dart';
 import 'package:babysitter_v1/src/core/constant/enums.dart';
-import 'package:babysitter_v1/main.dart'; // Assurez-vous que le chemin est correct
-
+import 'package:babysitter_v1/main.dart';
+import 'package:babysitter_v1/src/core/constant/app_cache.dart';
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -16,10 +17,17 @@ class LoginController extends GetxController {
   RxBool isLoading = false.obs;
   RxBool isShowPassword = false.obs;
   RxBool isRememberMe = false.obs;
+  final AppCache appCache = AppCache.instance;
 
   late String espaceRole;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
   void onInit() {
     super.onInit();
     // Initialize args from Get.arguments
@@ -64,21 +72,21 @@ class LoginController extends GetxController {
       final AuthResponse res = await supabase.auth
           .signInWithPassword(email: email, password: password);
 
-      AppCache().setUid("${res.session?.user.id}");
+      appCache.setUid("${res.session?.user.id}");
       final dataRole = await supabase
           .from(AppDB.user)
           .select("role,is_complete_profil,is_verified")
           .eq("id", "${res.session?.user.id}");
            // Ajout de .execute() pour exécuter la requête
 
-      AppCache().setRole("${dataRole[0]['role']}"); // Utilisation de .data pour accéder aux données
-      AppCache().setIsCompleteProfile(dataRole[0]['is_complete_profil']);
-      AppCache().setVerified(dataRole[0]['is_verified']);
+      appCache.setRole("${dataRole[0]['role']}"); // Utilisation de .data pour accéder aux données
+      appCache.setIsCompleteProfile(dataRole[0]['is_complete_profil']);
+      appCache.setVerified(dataRole[0]['is_verified']);
 
       log("dataRole: ${dataRole[0]['role']}");
 
-      bool isCompleteProfile = AppCache().getIsCompleteProfile();
-      bool isVerified = AppCache().getIsVerified();
+      bool isCompleteProfile = appCache.getIsCompleteProfile();
+      bool isVerified = appCache.getIsVerified();
       if (role.babySitter.name == dataRole[0]['role']) {
         log("ajout babysitter");
 
@@ -157,4 +165,19 @@ class LoginController extends GetxController {
     }
     return null;
   }
+   void signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser != null) {
+        // Handle sign-in logic with your backend or other services
+        print('Google User: ${googleUser.email}');
+      } else {
+        print('Sign in with Google canceled by user.');
+      }
+    } catch (error) {
+      print('Error signing in with Google: $error');
+      // Handle error
+    }
+  }
 }
+

@@ -12,7 +12,7 @@ class PasswordIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Icon(icon, color: PrimaryColors().blueGray300, size: 20),
+      child: Icon(icon, color: AppColor.blueGray300, size: 20),
     );
   }
 }

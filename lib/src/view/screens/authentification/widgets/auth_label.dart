@@ -1,8 +1,9 @@
+import 'package:babysitter_v1/src/core/constant/app_font.dart';
 import 'package:flutter/material.dart';
 import 'package:babysitter_v1/src/core/constant/app_color.dart';
 
 class AuthLabel extends StatelessWidget {
-  const AuthLabel(this.label, {Key? key}) : super(key: key);
+  const AuthLabel(this.label, {super.key});
 
   final String label;
 
@@ -10,11 +11,11 @@ class AuthLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 14,
         fontWeight: FontWeight.w600,
-        fontFamily: "Poppins",
-        color: PrimaryColors().blueGray90003,
+        fontFamily: AppFont.poppins,
+        color: AppColor.blueGray900,
       ),
     );
   }

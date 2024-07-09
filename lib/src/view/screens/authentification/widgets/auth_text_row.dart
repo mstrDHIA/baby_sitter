@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:babysitter_v1/src/core/constant/app_color.dart';
+import 'package:flutter/material.dart';
 
 class AuthTextRow extends StatelessWidget {
   const AuthTextRow({
-    Key? key,
+    super.key,
     required this.title,
     required this.subTitle,
     required this.onTap,
     this.fontSize,
-  }) : super(key: key);
+  });
 
   final String title, subTitle;
   final VoidCallback onTap;
@@ -32,9 +32,10 @@ class AuthTextRow extends StatelessWidget {
               TextSpan(
                 text: subTitle,
                 style: TextStyle(
-                    color: PrimaryColors().pink800,
-                    fontSize: fontSize ?? 12,
-                    fontWeight: FontWeight.w600),
+                  color: AppColor.pink800,
+                  fontSize: fontSize ?? 12,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),

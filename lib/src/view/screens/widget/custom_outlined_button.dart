@@ -16,8 +16,8 @@ class CustomTextButton extends StatelessWidget {
   final Widget? label;
   final VoidCallback onTap; // Ajout de onTap ici
 
-  CustomTextButton({
-    Key? key,
+  const CustomTextButton({
+    super.key,
     this.onPressed,
     this.buttonStyle,
     this.buttonTextStyle,
@@ -30,9 +30,8 @@ class CustomTextButton extends StatelessWidget {
     this.decoration,
     this.leftIcon,
     this.rightIcon,
-    this.label,
-    required this.onTap, // Ajout de required ici
-  }) : super(key: key);
+    this.label, required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -45,9 +44,9 @@ class CustomTextButton extends StatelessWidget {
         style: buttonStyle ??
             TextButton.styleFrom(
               backgroundColor: Colors.black,
-              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 10),
               textStyle: buttonTextStyle ??
-                  TextStyle(
+                  const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
@@ -65,7 +64,7 @@ class CustomTextButton extends StatelessWidget {
             Text(
               text,
               style: buttonTextStyle ??
-                  TextStyle(
+                  const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,

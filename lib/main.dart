@@ -9,22 +9,6 @@ import 'src/routeurs/routeurs.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart';
-
-enum MyRealtimeLogLevel { info, debug, warn, error }
-
-class MyRealtimeClientOptions {
-  @Deprecated('Client side rate limit has been removed. This option will be ignored.')
-  final int? eventsPerSecond;
-  final MyRealtimeLogLevel? logLevel;
-  final Duration? timeout;
-
-  const MyRealtimeClientOptions({
-    this.eventsPerSecond,
-    this.logLevel,
-    this.timeout,
-  });
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
