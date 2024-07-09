@@ -10,5 +10,7 @@ class AppRoute {
   static const String forget = '/forgetpage_screen';
   static const String forget2 = '/forgetpage2_screen';
   static const String verification = '/verificationNum_screen';
+  static const String reset='/resetpassword_screen';
+  static const String success='/resetpasswordsuccess_screen';
 }
 

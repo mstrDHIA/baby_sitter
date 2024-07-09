@@ -63,7 +63,9 @@ flutter:
     - assets/images/
     - assets/images/logo/
     - assets/images/img/
+    - assets/images/img/success.png
     - .env
+    
     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

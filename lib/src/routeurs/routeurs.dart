@@ -1,5 +1,7 @@
 import 'package:babysitter_v1/src/core/constant/app_route.dart';
 import 'package:babysitter_v1/src/view/screens/onboarding/onboarding_screen.dart';
+import 'package:babysitter_v1/src/view/screens/space/resetpassword_screen.dart';
+import 'package:babysitter_v1/src/view/screens/space/resetpasswordsucsses_view.dart';
 import 'package:babysitter_v1/src/view/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,4 +23,6 @@ List<GetPage<dynamic>>? routers = [
     GetPage(name:AppRoute. forget,page:()=>const ForgetPasswordScreen()),
     GetPage(name:AppRoute. forget2,page:()=>const ForgetScreen()),
     GetPage(name: AppRoute.verification, page: () => VerificationScreen(phoneNumber: '')),
+    GetPage(name:AppRoute.reset,page:()=>ResetPasswordView()),
+  GetPage(name:AppRoute.success,page:()=>ResetPasswordSuccessView()),
 ];

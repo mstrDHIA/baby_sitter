@@ -1,3 +1,4 @@
+import 'package:babysitter_v1/src/core/constant/app_route.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -108,6 +109,7 @@ class VerificationScreen extends StatelessWidget {
                   builder: (controller) => PrimaryButton(
                     name: "Confirmer",
                     onPressed: () {
+                      Get.toNamed(AppRoute.reset);
                       if (!controller.isLoading) {
                         controller.verifyCode();
                       }
