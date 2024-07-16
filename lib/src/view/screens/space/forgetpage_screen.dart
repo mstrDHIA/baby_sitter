@@ -49,6 +49,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                     name: "Envoyer",
                     onPressed: () {
                       Get.toNamed(AppRoute.forget2);
+                      
                       if (!controller.isLoading.value) {
                         controller.sendResetPasswordEmail();
                       }

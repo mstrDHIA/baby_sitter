@@ -9,13 +9,16 @@ class AuthLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      label,
-      style: const TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w600,
-        fontFamily: AppFont.poppins,
-        color: AppColor.blueGray900,
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Text(
+        label,
+        style: const TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+          fontFamily: AppFont.poppins,
+          color: AppColor.blueGray900,
+        ),
       ),
     );
   }

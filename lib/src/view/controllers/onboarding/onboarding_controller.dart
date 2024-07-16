@@ -10,6 +10,13 @@ class OnboardingController extends GetxController {
   final PageController _pageController = PageController();
    final AppCache appCache = AppCache.instance;
 
+
+
+   static OnboardingController get to => Get.find();
+
+
+  bool get isFirstOpen => !appCache.getOnboarded();
+
   // Getter
   PageController get pageController => _pageController;
   int get currentPage => _currentPage;
@@ -31,8 +38,19 @@ class OnboardingController extends GetxController {
     _currentPage++;
     update();
   }
+/*void navigateToPage() {
+  if (!isLastPage()) {
+    _pageController.nextPage(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.ease,
+    );
+  } else {
+    Get.offAllNamed(AppRoute.login);
+    appCache.setOnboarded(true);
+  }
+}*/
 
-  void navigateToPage() {
+      void navigateToPage() {
     if (!isLastPage()) {
       _pageController.nextPage(
         duration: const Duration(milliseconds: 300),

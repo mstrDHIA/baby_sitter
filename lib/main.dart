@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,10 +18,25 @@ void main() async {
   timeago.setLocaleMessages('fr', timeago.FrMessages());
   await initialServices();
   await dotenv.load(fileName: ".env");
-  await Supabase.initialize(
-   url: dotenv.get("SUPABASE_URL"),
-    anonKey: dotenv.get("SUPABASE_ANON_KEY")
- );
+  
+  final supabaseUrl = dotenv.env['SUPABASE_URL'];
+  final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
+  
+  if (supabaseUrl == null || supabaseAnonKey == null) {
+    print('Supabase URL or Anon Key is not set in the .env file');
+    return;
+  }
+
+  try {
+     await Supabase.initialize(
+      url: supabaseUrl,
+      anonKey: supabaseAnonKey,
+    );
+  } catch (error) {
+    print('Erreur lors de l\'initialisation de Supabase: $error');
+    return;
+  }
+
   runApp(const MyApp());
 }
 

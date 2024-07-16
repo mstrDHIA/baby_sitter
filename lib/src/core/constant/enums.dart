@@ -1,11 +1,4 @@
-enum role {
-  admin,
-  babySitter,
-  creche,
-  parent,
-  docteur,
-  market,
-}
+
 
 enum genre {
   femme,
@@ -21,4 +14,12 @@ enum besoin {
   nounous,
   babysitter,
   centre_de_garde_enfant,
+}
+enum Role {
+  babySitter,
+  admin,
+  parent,
+  doctor,
+  creche,
+  market,
 }

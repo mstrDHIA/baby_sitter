@@ -1,36 +1,29 @@
 import 'dart:developer';
+import 'package:babysitter_v1/src/core/constant/appDB.dart';
+import 'package:babysitter_v1/src/core/constant/app_cache.dart';
+import 'package:babysitter_v1/src/core/constant/app_route.dart';
+import 'package:babysitter_v1/src/core/constant/enums.dart';
+import 'package:babysitter_v1/src/core/functions/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'package:babysitter_v1/src/core/functions/show_snack_bar.dart';
-import 'package:babysitter_v1/src/core/constant/appDB.dart';
-import 'package:babysitter_v1/src/core/constant/enums.dart';
-import 'package:babysitter_v1/main.dart';
-import 'package:babysitter_v1/src/core/constant/app_cache.dart';
 class LoginController extends GetxController {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  RxBool isLoading = false.obs;
-  RxBool isShowPassword = false.obs;
-  RxBool isRememberMe = false.obs;
+  bool isShowPassword = false;
+  bool isRememberMe = false;
   final AppCache appCache = AppCache.instance;
 
   late String espaceRole;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
   void onInit() {
     super.onInit();
-    // Initialize args from Get.arguments
     espaceRole = Get.arguments['espace_role'];
     log("espaceRole: $espaceRole");
   }
@@ -43,141 +36,87 @@ class LoginController extends GetxController {
   }
 
   void handleShowPassword() {
-    isShowPassword.value = !isShowPassword.value;
+    isShowPassword = !isShowPassword;
   }
 
   void handleRememberMe() {
-    isRememberMe.value = !isRememberMe.value;
+    isRememberMe = !isRememberMe;
   }
 
-  bool getIsVerified() => sharedPref!.getBool("VERIFIED") ?? false;
-
-  void login() {
-    if (formKey.currentState!.validate()) {
-      signInWithEmailPassword();
-    } else {
+  Future<void> signInWithEmailPassword() async {
+    if (!formKey.currentState!.validate()) {
       showSnackbar(
           context: Get.context!,
           message: "Please enter valid email and password",
           isError: true);
+      return;
     }
-  }
 
-  Future<void> signInWithEmailPassword() async {
-    isLoading.value = true;
     try {
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
 
-      final AuthResponse res = await supabase.auth
+      final AuthResponse res = await Supabase.instance.client.auth
           .signInWithPassword(email: email, password: password);
 
-      appCache.setUid("${res.session?.user.id}");
-      final dataRole = await supabase
+      if (res.user == null) {
+        throw Exception('Login failed');
+      }
+
+      appCache.setUid("${res.user!.id}");
+      final dataRoleResponse = await Supabase.instance.client
           .from(AppDB.user)
-          .select("role,is_complete_profil,is_verified")
-          .eq("id", "${res.session?.user.id}");
-           // Ajout de .execute() pour exécuter la requête
+          .select("role, nom")
+          .eq("id", res.user!.id)
+          .maybeSingle();
 
-      appCache.setRole("${dataRole[0]['role']}"); // Utilisation de .data pour accéder aux données
-      appCache.setIsCompleteProfile(dataRole[0]['is_complete_profil']);
-      appCache.setVerified(dataRole[0]['is_verified']);
+      if (dataRoleResponse != null && dataRoleResponse.isNotEmpty) {
+        String role = dataRoleResponse['role'];
+        String nom = dataRoleResponse['nom'];
 
-      log("dataRole: ${dataRole[0]['role']}");
+        appCache.setRole(role);
 
-      bool isCompleteProfile = appCache.getIsCompleteProfile();
-      bool isVerified = appCache.getIsVerified();
-      if (role.babySitter.name == dataRole[0]['role']) {
-        log("ajout babysitter");
+        log("Role: $role, Nom: $nom");
 
-        if (isVerified && isCompleteProfile) {
-          // Utilisez Get.offAll(() => NomDeVotreEcran()) pour naviguer
-          // Get.offAll(() => PlanificationenfantScreen());
-        } else if (!isVerified && isCompleteProfile) {
-          // Get.offAll(() => LoadingScreen());
-        } else {
-          // Get.offAll(() => IdentitBabySitterTapeTwoScreen());
+        if (role == Role.babySitter.name) {
+          Get.toNamed(AppRoute.espace);
+        } else if (role == Role.admin.name) {
+          // Redirection pour le rôle admin
+          // Get.toNamed(AppRoute.adminHome);
+        } else if (role == Role.parent.name) {
+          // Redirection pour le rôle parent
+          // Get.toNamed(AppRoute.registerParent);
+        } else if (role == Role.doctor.name) {
+          // Redirection pour le rôle doctor
+          // Get.toNamed(AppRoute.doctorProfile);
+        } else if (role == Role.creche.name) {
+          // Redirection pour le rôle creche
+          // Get.toNamed(AppRoute.crecheHome);
         }
-      } else if (role.admin.name == dataRole[0]['role']) {
-        log("ajout admin");
-        if (isCompleteProfile) {
-         // Get.offAll(() => HomePageAdminScreen());
-        } else {
-         // Get.offAll(() => RegisterAdminPhAScreen());
-        }
-      } else if (role.parent.name == dataRole[0]['role']) {
-        log("ajout parent");
-       // Get.offAll(() => RegisterParent1ScreenScreen());
-      } else if (role.docteur.name == dataRole[0]['role']) {
-        log("docteur");
-
-        if (isVerified && isCompleteProfile) {
-         // Get.offAll(() => ProfileDoctoraScreen());
-        } else if (!isVerified && isCompleteProfile) {
-          // Get.offAll(() => LoadingScreen());
-        } else {
-         // Get.offAll(() => AjoutPhotodocScreen());
-        }
-      } else if (role.creche.name == dataRole[0]['role']) {
-        log("creche");
-
-        if (isVerified && isCompleteProfile) {
-         // Get.offAll(() => HomepageCrecheScreen());
-        } else if (!isVerified && isCompleteProfile) {
-          // Get.offAll(() => LoadingScreen());
-        } else {
-         // Get.offAll(() => AjoutphcrecheScreen());
-        }
-      } else {}
-    } catch (error) {
-      isLoading.value = false;
-      print('Erreur de connexion: $error');
-      if (error.toString().contains("400")) {
+      } else {
         showSnackbar(
             context: Get.context!,
-            message: "Email ou mot de passe incorrect",
+            message: "Role information not found",
             isError: true);
-      } else {
-        showSnackbar(context: Get.context!, message: "$error", isError: true);
       }
-    } finally {
-      isLoading.value = false;
+    } catch (error) {
+      showSnackbar(
+          context: Get.context!,
+          message: "Connection Error: $error",
+          isError: true);
     }
   }
 
-  String? validEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Email cannot be empty';
-    }
-    final emailRegExp = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegExp.hasMatch(value)) {
-      return 'Enter a valid email';
-    }
-    return null;
-  }
-
-  String? validPassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Password cannot be empty';
-    }
-    if (value.length < 6) {
-      return 'Password must be at least 6 characters long';
-    }
-    return null;
-  }
-   void signInWithGoogle() async {
+  void signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser != null) {
-        // Handle sign-in logic with your backend or other services
         print('Google User: ${googleUser.email}');
       } else {
         print('Sign in with Google canceled by user.');
       }
     } catch (error) {
       print('Error signing in with Google: $error');
-      // Handle error
     }
   }
 }
-

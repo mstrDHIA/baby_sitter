@@ -39,8 +39,8 @@ class RegisterScreen extends StatelessWidget {
                   builder: (controller) => AuthInput(
                     hintText: "Nom",
                     controller: controller.nameController,
-                    validator: (value) => validInput(value!, 3, 50, "text"), // Ajout des arguments nécessaires
-                    readOnly: controller.isLoading,
+                    validator: (value) => validInput(value!, 3, 50, "text"),
+                    readOnly: controller.isLoading.value,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -50,8 +50,8 @@ class RegisterScreen extends StatelessWidget {
                   builder: (controller) => AuthInput(
                     hintText: "Prénom",
                     controller: controller.firstNameController,
-                    validator: (value) => validInput(value!, 3, 50, "text"), // Ajout des arguments nécessaires
-                    readOnly: controller.isLoading,
+                    validator: (value) => validInput(value!, 3, 50, "text"),
+                    readOnly: controller.isLoading.value,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -62,8 +62,8 @@ class RegisterScreen extends StatelessWidget {
                     hintText: "e.g. john@mail.com",
                     controller: controller.emailController,
                     keyboardType: TextInputType.emailAddress,
-                    validator: (value) => validInput(value!, 6, 50, "email"), // Ajout des arguments nécessaires
-                    readOnly: controller.isLoading,
+                    validator: (value) => validInput(value!, 6, 50, "email"),
+                    readOnly: controller.isLoading.value,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -73,13 +73,13 @@ class RegisterScreen extends StatelessWidget {
                   builder: (controller) => AuthInput(
                     hintText: "e.g. *********",
                     controller: controller.passwordController,
-                    validator: (value) => validInput(value!, 4, 25, "password"), // Ajout des arguments nécessaires
-                    obscure: !controller.isShowPassword,
+                    validator: (value) => validInput(value!, 4, 25, "password"),
+                    obscure: !controller.isShowPassword.value,
                     suffix: PasswordIcon(
-                      icon: controller.isShowPassword ? Icons.visibility : Icons.visibility_off,
+                      icon: controller.isShowPassword.value ? Icons.visibility : Icons.visibility_off,
                       onTap: () => controller.handleShowPassword(),
                     ),
-                    readOnly: controller.isLoading,
+                    readOnly: controller.isLoading.value,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -89,13 +89,13 @@ class RegisterScreen extends StatelessWidget {
                   builder: (controller) => AuthInput(
                     hintText: "e.g. *********",
                     controller: controller.confirmPasswordController,
-                    validator: (value) => validConfirmPassword(value!, controller.passwordController.text), // Validation du mot de passe confirmé
-                    obscure: !controller.isShowConfirmPassword,
+                    validator: (value) => validConfirmPassword(value!, controller.passwordController.text),
+                    obscure: !controller.isShowConfirmPassword.value,
                     suffix: PasswordIcon(
-                      icon: controller.isShowConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                      icon: controller.isShowConfirmPassword.value ? Icons.visibility : Icons.visibility_off,
                       onTap: () => controller.handleShowConfirmPassword(),
                     ),
-                    readOnly: controller.isLoading,
+                    readOnly: controller.isLoading.value,
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -103,7 +103,7 @@ class RegisterScreen extends StatelessWidget {
                   children: [
                     GetBuilder<RegisterController>(
                       builder: (controller) => Checkbox(
-                        value: controller.isRememberMe,
+                        value: controller.isRememberMe.value,
                         onChanged: (value) => controller.handleRememberMe(),
                       ),
                     ),
@@ -115,12 +115,11 @@ class RegisterScreen extends StatelessWidget {
                   builder: (controller) => PrimaryButton(
                     name: "Créer Un Compte",
                     onPressed: () {
-       if (!controller.isLoading) {
-       controller.register();
-  }
-},
-
-                    loading: controller.isLoading,
+                      if (!controller.isLoading.value) {
+                        controller.register();
+                      }
+                    },
+                    loading: controller.isLoading.value,
                   ),
                 ),
                 const SizedBox(height: 15),

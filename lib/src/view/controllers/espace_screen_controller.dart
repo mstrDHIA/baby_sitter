@@ -1,4 +1,5 @@
-import 'package:babysitter_v1/src/view/screens/space/babysitter/babysitter_screen.dart';
+import 'package:babysitter_v1/src/view/screens/space/babysitter/babysitter_photo_screen.dart';
+import 'package:babysitter_v1/src/view/screens/space/babysitter/profilbabysitter_p1_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:babysitter_v1/src/core/constant/app_cache.dart';
@@ -28,12 +29,12 @@ class EspaceController extends GetxController {
   void navigateBasedOnRole() {
     switch (userRole.value) {
       case 'babySitter':
-        Get.to(() => AjoutBabysitterScreen());
+        Get.toNamed(AppRoute.babysitter);
         break;
       case 'docteur':
         if (isVerified.value && isCompleteProfile.value) {
           // Get.to(() => ProfileDoctoraScreen());
-        } else if (!isVerified.value && isCompleteProfile.value) {
+        //} else if (!isVerified.value && isCompleteProfile.value) {
           // Get.to(() => LoadingScreen());
         } else {
           // Get.to(() => AjoutPhotodocScreen());

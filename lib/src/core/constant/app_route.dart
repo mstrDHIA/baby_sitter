@@ -12,5 +12,10 @@ class AppRoute {
   static const String verification = '/verificationNum_screen';
   static const String reset='/resetpassword_screen';
   static const String success='/resetpasswordsuccess_screen';
+  static const String loading='/loading_screen';
+  static const String identitebabysitter='/identitebabysitter_screen';
+  static const String babysingup='/babysitter_signup_view';
+  static const String babysitterphoto='/babysitter_photo_screen';
 }
+
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../../../main.dart';
 import '../../core/constant/app_cache.dart';
 import '../../core/functions/show_snack_bar.dart';
@@ -14,10 +13,10 @@ class RegisterController extends GetxController {
   TextEditingController confirmPasswordController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  bool isLoading = false;
-  bool isShowPassword = false;
-  bool isShowConfirmPassword = false;
-  bool isRememberMe = false;
+  RxBool isLoading = false.obs;
+  RxBool isShowPassword = false.obs;
+  RxBool isShowConfirmPassword = false.obs;
+  RxBool isRememberMe = false.obs;
   final AppCache appCache = AppCache.instance;
 
   @override
@@ -31,18 +30,15 @@ class RegisterController extends GetxController {
   }
 
   void handleShowPassword() {
-    isShowPassword = !isShowPassword;
-    update();
+    isShowPassword.value = !isShowPassword.value;
   }
 
   void handleShowConfirmPassword() {
-    isShowConfirmPassword = !isShowConfirmPassword;
-    update();
+    isShowConfirmPassword.value = !isShowConfirmPassword.value;
   }
 
   void handleRememberMe() {
-    isRememberMe = !isRememberMe;
-    update();
+    isRememberMe.value = !isRememberMe.value;
   }
 
   void register() {
@@ -52,22 +48,21 @@ class RegisterController extends GetxController {
       } else {
         showSnackbar(
           context: Get.context!,
-          message: "Passwords do not match",
+          message: "Les mots de passe ne correspondent pas",
           isError: true,
         );
       }
     } else {
       showSnackbar(
         context: Get.context!,
-        message: "Please fill in all fields correctly",
+        message: "Veuillez remplir tous les champs correctement",
         isError: true,
       );
     }
   }
 
   Future<void> signUpWithEmailPassword() async {
-    isLoading = true;
-    update();
+    isLoading.value = true;
     try {
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
@@ -76,23 +71,40 @@ class RegisterController extends GetxController {
         password: password,
       );
 
-      appCache.setUid("${res.user?.id}");
-      appCache.setRole("user");
+      if (res.user != null) {
+        // Set user ID and role in cache
+        appCache.setUid("${res.user!.id}");
+        appCache.setRole("user");
 
-      // Add additional logic as needed after registration
+        // Additional registration logic, such as navigating to a different page
+        // Get.offAll(() => SomeScreen());
 
+        // Insert additional user information into the database
+        await supabase.from('user').insert({
+          'id': res.user!.id,
+          'name': nameController.text.trim(),
+          'first_name': firstNameController.text.trim(),
+          'Role': 'user',
+          'is_complete_profil': false,
+          'is_verified': false,
+        });
+
+      } else {
+        showSnackbar(
+          context: Get.context!,
+          message: "Registration failed. Please try again.",
+          isError: true,
+        );
+      }
     } catch (error) {
-      isLoading = false;
-      update();
       print('Erreur de registration: $error');
       showSnackbar(
         context: Get.context!,
-        message: "An error occurred during registration",
+        message: "Une erreur s'est produite lors de l'enregistrement",
         isError: true,
       );
     } finally {
-      isLoading = false;
-      update();
+      isLoading.value = false;
     }
   }
 }

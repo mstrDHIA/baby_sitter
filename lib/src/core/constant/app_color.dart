@@ -16,4 +16,7 @@ class AppColor {
   static const Color blueGray300 = Color(0XFFA1A3B0);
   static const Color blueGray100 = Color(0XFFD1D0D0);
    static const Color blueGray255 = Color.fromARGB(255, 13, 13, 13);
+   static const Color deepOrange5001=Color(0XFFFFE3E5);
+   static const Color red50=Color(0XFFFFF1F2); 
 }
+  

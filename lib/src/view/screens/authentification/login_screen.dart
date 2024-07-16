@@ -13,6 +13,8 @@ import 'widgets/auth_label.dart';
 import 'package:babysitter_v1/src/view/controllers/login_screen_controller.dart';
 import 'widgets/auth_text_row.dart';
 import 'package:babysitter_v1/src/core/constant/app_color.dart';
+import 'package:babysitter_v1/src/view/controllers/espace_screen_controller.dart';
+
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -20,6 +22,7 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final LoginController controller = Get.put(LoginController());
+    final EspaceController espaceController =Get .put(EspaceController());
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -52,7 +55,7 @@ class LoginScreen extends StatelessWidget {
                     controller: controller.emailController,
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) => validInput(value!, 6, 50, "email"),
-                    readOnly: controller.isLoading.value,
+                   // readOnly: controller.isLoading.value,
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -63,14 +66,14 @@ class LoginScreen extends StatelessWidget {
                     hintText: "************",
                     controller: controller.passwordController,
                     validator: (value) => validInput(value!, 4, 25, "password"),
-                    obscure: !controller.isShowPassword.value,
+                    obscure: !controller.isShowPassword,
                     suffix: PasswordIcon(
-                      icon: controller.isShowPassword.value
+                      icon: controller.isShowPassword
                           ? Icons.visibility
                           : Icons.visibility_off,
                       onTap: () => controller.handleShowPassword(),
                     ),
-                    readOnly: controller.isLoading.value,
+                   // readOnly: controller.isLoading.value,
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -78,11 +81,13 @@ class LoginScreen extends StatelessWidget {
                   builder: (controller) => PrimaryButton(
                     name: "Se Connecter",
                     onPressed: () {
-                      if (!controller.isLoading.value) {
-                        controller.login();
-                      }
-                    },
-                    loading: controller.isLoading.value,
+                    
+                        controller.signInWithEmailPassword;
+                       Get.toNamed(AppRoute.babysitter);
+                         
+                      },
+                  
+                   // loading: controller.isLoading.value,
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -90,7 +95,7 @@ class LoginScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   child: GestureDetector(
                     onTap: () {
-                      Get.toNamed(AppRoute.forget);
+                      Get.offNamed(AppRoute.forget);
                     },
                     child: const Text(
                       "Mot de passe oublié?",
@@ -112,7 +117,7 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       OutlinedButton(
                         onPressed: () {
-                          controller.signInWithGoogle();
+                         // controller.signInWithGoogle();
                         },
                         style: OutlinedButton.styleFrom(
                           side: const BorderSide(color: Colors.black12),
@@ -163,7 +168,7 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * .21),
+                const SizedBox(height:15),
                 AuthTextRow(
                   title: "Vous n'avez pas de compte ? ",
                   subTitle: "Inscrivez-vous.",
