@@ -46,6 +46,8 @@ dependencies:
   injectable: ^1.5.2
   flutter_secure_storage: ^9.2.2
   provider: ^6.0.3
+ 
+  firebase_ui_auth: ^1.15.0
 
 dev_dependencies:
   flutter_lints: ^4.0.0

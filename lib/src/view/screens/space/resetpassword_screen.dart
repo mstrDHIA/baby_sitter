@@ -3,6 +3,7 @@ import 'package:babysitter_v1/src/view/controllers/resetpassword_controller.dart
 import 'package:babysitter_v1/src/view/screens/authentification/widgets/auth_description.dart';
 import 'package:babysitter_v1/src/view/screens/authentification/widgets/auth_input.dart';
 import 'package:babysitter_v1/src/view/screens/authentification/widgets/auth_label.dart';
+import 'package:babysitter_v1/src/view/screens/space/resetpasswordsucsses_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/functions/valid_input.dart';
@@ -85,7 +86,7 @@ class ResetPasswordView extends StatelessWidget {
                     name: "Confirmer",
                     
                     onPressed: () {
-                       Get.toNamed(AppRoute.success);
+                       Get.to(ResetPasswordSuccessView());
                       //if (!controller.isLoading.value) {
                         //controller.resetPassword();
                      // }

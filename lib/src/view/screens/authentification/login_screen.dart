@@ -1,9 +1,11 @@
+import 'package:babysitter_v1/src/view/screens/space/babysitter/babysitter_signup_view.dart';
+import 'package:babysitter_v1/src/view/screens/space/forgetpage_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/constant/app_route.dart';
 import '../../../core/functions/valid_input.dart';
-import '../widget/custom_outlined_button.dart';
+
 import '../widget/logo_text_card.dart';
 import '../widget/password_icon.dart';
 import '../widget/primary_button.dart';
@@ -13,7 +15,7 @@ import 'widgets/auth_label.dart';
 import 'package:babysitter_v1/src/view/controllers/login_screen_controller.dart';
 import 'widgets/auth_text_row.dart';
 import 'package:babysitter_v1/src/core/constant/app_color.dart';
-import 'package:babysitter_v1/src/view/controllers/espace_screen_controller.dart';
+
 
 
 class LoginScreen extends StatelessWidget {
@@ -21,8 +23,10 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+   
     final LoginController controller = Get.put(LoginController());
-    final EspaceController espaceController =Get .put(EspaceController());
+    
+    
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -82,8 +86,8 @@ class LoginScreen extends StatelessWidget {
                     name: "Se Connecter",
                     onPressed: () {
                     
-                        controller.signInWithEmailPassword;
-                       Get.toNamed(AppRoute.babysitter);
+                        controller.signInWithEmailPassword();
+                      // Get.toNamed(AppRoute.babysitter);
                          
                       },
                   
@@ -95,7 +99,7 @@ class LoginScreen extends StatelessWidget {
                   alignment: Alignment.center,
                   child: GestureDetector(
                     onTap: () {
-                      Get.offNamed(AppRoute.forget);
+                      Get.off(ForgetPasswordScreen());
                     },
                     child: const Text(
                       "Mot de passe oublié?",
@@ -173,7 +177,7 @@ class LoginScreen extends StatelessWidget {
                   title: "Vous n'avez pas de compte ? ",
                   subTitle: "Inscrivez-vous.",
                   onTap: () {
-                    Get.toNamed(AppRoute.inscription);
+                    Get.to(RegisterView());
                   },
                 ),
                 const SizedBox(height: 25),

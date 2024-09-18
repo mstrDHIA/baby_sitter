@@ -1,70 +1,59 @@
+import 'package:babysitter_v1/src/core/constant/app_cache.dart';
+import 'package:babysitter_v1/src/core/constant/app_route.dart';
 import 'package:babysitter_v1/src/view/screens/space/babysitter/babysitter_photo_screen.dart';
-import 'package:babysitter_v1/src/view/screens/space/babysitter/profilbabysitter_p1_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:babysitter_v1/src/core/constant/app_cache.dart';
-import 'dart:developer';
-import 'package:babysitter_v1/src/core/constant/app_route.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class EspaceController extends GetxController {
   final RxString userRole = ''.obs;
-  final RxBool isCompleteProfile = false.obs;
-  final RxBool isVerified = false.obs;
-  final AppCache appCache = AppCache.instance;
-  
+  final supabase = Supabase.instance.client;
 
-  @override
-  void onInit() {
-    super.onInit();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (appCache.getUid() != "") { 
-        userRole.value = appCache.getRole(); 
-        isCompleteProfile.value = appCache.getIsCompleteProfile(); 
-        isVerified.value = appCache.getIsVerified(); 
+  Future<void> setUserRole(String role) async {
+    if (role.isEmpty) {
+      Get.snackbar('Erreur', 'Le rôle ne peut pas être vide');
+      return;
+    }
+
+    final user = supabase.auth.currentUser;
+    if (user == null) {
+      Get.snackbar('Erreur', 'Utilisateur non authentifié');
+      return;
+    }
+
+    final userId = user.id;
+
+    try {
+      final response = await supabase
+          .from('user')
+          .upsert({'id': userId, 'role': role})
+          .select()
+          .single();
+
+      if (response == null) {
+        Get.snackbar('Erreur', 'Impossible de définir le rôle de l\'utilisateur');
+      } else {
+        AppCache.instance.setRole(role);
+        userRole.value = role;
+        // Enregistrez le rôle dans votre cache local si nécessaire
         navigateBasedOnRole();
       }
-    });
+    } catch (e) {
+      Get.snackbar('Exception', 'Erreur lors de la définition du rôle : $e');
+    }
   }
 
   void navigateBasedOnRole() {
     switch (userRole.value) {
       case 'babySitter':
-        Get.toNamed(AppRoute.babysitter);
-        break;
-      case 'docteur':
-        if (isVerified.value && isCompleteProfile.value) {
-          // Get.to(() => ProfileDoctoraScreen());
-        //} else if (!isVerified.value && isCompleteProfile.value) {
-          // Get.to(() => LoadingScreen());
-        } else {
-          // Get.to(() => AjoutPhotodocScreen());
-        }
+        Get.to(AjoutBabysitterPhotoScreen());
         break;
       case 'parent':
-        // Get.to(() => RegisterParent1ScreenScreen());
-        break;
-      case 'creche':
-        if (isVerified.value && isCompleteProfile.value) {
-          // Get.to(() => HomepageCrecheScreen());
-        } else if (!isVerified.value && isCompleteProfile.value) {
-          // Get.to(() => LoadingScreen());
-        } else {
-          // Get.to(() => AjoutphcrecheScreen());
-        }
-        break;
-      case 'admin':
-        if (isCompleteProfile.value) {
-          // Get.to(() => HomePageAdminScreen());
-        } else {
-          // Get.to(() => RegisterAdminPhAScreen());
-        }
+        Get.to(AjoutBabysitterPhotoScreen());
+        // Get.toNamed(AppRoute.horaire);
         break;
       default:
-        break;
+        Get.snackbar('Erreur', 'Rôle invalide pour la navigation');
     }
-  }
-
-  void goToLoginScreen(String id) {
-    Get.toNamed(AppRoute.login, arguments: {"espace_role": id});
   }
 }

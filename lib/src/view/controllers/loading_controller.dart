@@ -2,6 +2,7 @@ import 'package:babysitter_v1/main.dart';
 import 'package:babysitter_v1/src/core/constant/appDB.dart';
 import 'package:babysitter_v1/src/core/constant/app_cache.dart';
 import 'package:babysitter_v1/src/core/constant/app_route.dart';
+import 'package:babysitter_v1/src/view/screens/authentification/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -39,9 +40,11 @@ class LoadingController extends GetxController {
   }*/
 
   void logout() async {
-    await supabase.auth.signOut();
-    String role = AppCache.instance.getRole();
+    // await supabase.auth.signOut();
+    // String role = AppCache.instance.getRole();
     AppCache.instance.clear();
-    Get.offNamed(AppRoute.login, arguments: {"espace_role": role});
+    Get.offAll(LoginScreen(), 
+    // arguments: {"espace_role": role}
+    );
   }
 }

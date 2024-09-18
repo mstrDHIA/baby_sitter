@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:babysitter_v1/main.dart';
 import 'package:babysitter_v1/src/core/constant/app_cache.dart';
 import 'package:babysitter_v1/src/core/constant/app_color.dart';
+import 'package:babysitter_v1/src/core/constant/app_route.dart';
+import 'package:babysitter_v1/src/view/screens/space/babysitter/tarif_screen.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class IdentitBabySitterTapeTwoController extends GetxController {
   File? _imageCinFront;
@@ -27,16 +30,20 @@ class IdentitBabySitterTapeTwoController extends GetxController {
 
   Future<void> getImageFromDatabase() async {
     try {
+      final userId = AppCache.instance.getUid();
+      if (userId == null) return;
+      
       final data = await supabase
-          .from('babySitter')
-          .select('image_cin_front, image_cin_back')
-          .match({'uid': AppCache.instance.getUid()});
+          .from('babySitters')
+          .select('cin_recto, cin_verso')
+          .eq('uid', userId)
+          .single();
 
-      if (data.isNotEmpty && data[0]['image_cin_front'] != null ||
-          data[0]['image_cin_back'] != null) {
-        _imageurlFront = "$_imageBaseUrl${data[0]['image_cin_front'].toString()}";
-        _imageurlBack = "$_imageBaseUrl${data[0]['image_cin_back'].toString()}";
-        log(_imageurlFront.toString());
+      if (data != null && (data['cin_recto'] != null || data['cin_verso'] != null)) {
+        _imageurlFront = "$_imageBaseUrl${data['cin_recto']}";
+        _imageurlBack = "$_imageBaseUrl${data['cin_verso']}";
+        log("Front Image URL: $_imageurlFront");
+        log("Back Image URL: $_imageurlBack");
         update();
       }
     } catch (e) {
@@ -48,7 +55,8 @@ class IdentitBabySitterTapeTwoController extends GetxController {
     XFile? imageFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (imageFile != null) {
       _imageCinFront = File(imageFile.path);
-      uploadFrontImage();
+      await uploadFrontImage();
+      _imageurlFront = _imageCinFront!.path;
       update();
     }
   }
@@ -57,22 +65,27 @@ class IdentitBabySitterTapeTwoController extends GetxController {
     XFile? imageFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (imageFile != null) {
       _imageCinBack = File(imageFile.path);
-      uploadBackImage();
+      await uploadBackImage();
+      _imageurlBack = _imageCinBack!.path;
       update();
     }
   }
 
   Future<void> uploadFrontImage() async {
     String currentDateTime = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-    String fileName = 'user_cin_$currentDateTime.jpg';
+    String fileName = 'user_cin_front_$currentDateTime.jpg';
     String filePath = "upload/cin/";
 
     try {
       final response = await supabase.storage
           .from('images')
           .upload('$filePath$fileName', _imageCinFront!);
-      log("image front: $response");
-      await updateDatabaseFront(response);
+
+      if (response == null) {
+        await updateDatabaseFront(fileName);
+      } else {
+        log('Error uploading front image: ${response}');
+      }
     } catch (e) {
       log('Error uploading front image: $e');
     }
@@ -80,44 +93,50 @@ class IdentitBabySitterTapeTwoController extends GetxController {
 
   Future<void> uploadBackImage() async {
     String currentDateTime = DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
-    String fileName = 'user_cin_$currentDateTime.jpg';
+    String fileName = 'user_cin_back_$currentDateTime.jpg';
     String filePath = "upload/cin/";
 
     try {
       final response = await supabase.storage
           .from('images')
           .upload('$filePath$fileName', _imageCinBack!);
-      log("image back: $response");
-      await updateDatabaseBack(response);
+
+      if (response == null) {
+        await updateDatabaseBack(fileName);
+      } else {
+        log('Error uploading back image: ${response}');
+      }
     } catch (e) {
       log('Error uploading back image: $e');
     }
   }
 
-  Future<void> updateDatabaseBack(String image) async {
-    await supabase.from('babySitter').update({
-      'image_cin_back': image,
-    }).match({'uid': AppCache.instance.getUid()});
+  Future<void> updateDatabaseFront(String fileName) async {
+    String imageUrl = "$_imageBaseUrl/images/$fileName";
+    await supabase.from('babySitters').update({
+      'cin_recto': imageUrl,
+    }).eq('uid', AppCache.instance.getUid());
 
-    _imageurlBack = "$_imageBaseUrl${image.toString()}";
+    _imageurlFront = imageUrl;
     update();
   }
 
-  Future<void> updateDatabaseFront(String image) async {
-    await supabase.from('babySitter').update({
-      'image_cin_front': image,
-    }).match({'uid': AppCache.instance.getUid()});
+  Future<void> updateDatabaseBack(String fileName) async {
+    String imageUrl = "$_imageBaseUrl/images/$fileName";
+    await supabase.from('babySitters').update({
+      'cin_verso': imageUrl,
+    }).eq('uid', AppCache.instance.getUid());
 
-    _imageurlFront = "$_imageBaseUrl${image.toString()}";
+    _imageurlBack = imageUrl;
     update();
   }
 
   void handleNext() {
     if (_imageurlFront != null && _imageurlBack != null) {
-      Get.toNamed('/planification_baby_sitter_tape_three_screen');
+      Get.to(TarifScreen());
     } else {
-      Get.snackbar("Erreur", "Veuillez importer une image ! ",
-          snackPosition: SnackPosition.BOTTOM, backgroundColor: AppColor.primaryColor);
+      Get.snackbar("Erreur", "Veuillez importer une image !",
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: AppColor.white);
     }
   }
 }

@@ -15,7 +15,7 @@ enum besoin {
   babysitter,
   centre_de_garde_enfant,
 }
-enum Role {
+enum role {
   babySitter,
   admin,
   parent,

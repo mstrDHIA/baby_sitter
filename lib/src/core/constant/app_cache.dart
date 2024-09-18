@@ -9,7 +9,7 @@ class AppCache {
 
 
   static AppCache get instance => _instance;
-
+  final String nbrKids='kids_number';
   final String _onboardedKey = "ONBOARDED_KEY";
   final String _isCompleteProfile = "IS_COMPLETE_PROFILE";
   final String _uid = "UID";
@@ -27,6 +27,10 @@ class AppCache {
   Future<void> setUid(String value) async =>
       await sharedPref!.setString(_uid, value);
   String getUid() => sharedPref!.getString(_uid) ?? "";
+
+  Future<void> setNbrKids(int value) async =>
+      await sharedPref!.setInt(nbrKids, value);
+  int getNbrKids() => sharedPref!.getInt(nbrKids) ?? 0;
 
   // ISVERIFIED
   Future<void> setVerified(bool value) async =>

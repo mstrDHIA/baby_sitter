@@ -4,7 +4,10 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links
+  desktop_webview_auth
   file_selector_windows
+  firebase_auth
+  firebase_core
   flutter_secure_storage_windows
   url_launcher_windows
 )

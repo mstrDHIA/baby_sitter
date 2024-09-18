@@ -1,6 +1,7 @@
 import 'package:babysitter_v1/src/core/constant/app_route.dart';
 import 'package:babysitter_v1/src/core/functions/valid_input.dart';
 import 'package:babysitter_v1/src/view/controllers/babysitter/babysitter_signup_controller.dart';
+import 'package:babysitter_v1/src/view/screens/authentification/login_screen.dart';
 import 'package:babysitter_v1/src/view/screens/authentification/widgets/auth_description.dart';
 import 'package:babysitter_v1/src/view/screens/authentification/widgets/auth_input.dart';
 import 'package:babysitter_v1/src/view/screens/authentification/widgets/auth_label.dart';
@@ -9,8 +10,6 @@ import 'package:babysitter_v1/src/view/screens/widget/password_icon.dart';
 import 'package:babysitter_v1/src/view/screens/widget/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-
 
 class RegisterView extends StatelessWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -80,27 +79,27 @@ class RegisterView extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 const AuthLabel("Votre Date De Naissance"),
-        GestureDetector(
-          onTap: () async {
-            DateTime? pickedDate = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(1900),
-              lastDate: DateTime.now(),
-            );
-            if (pickedDate != null) {
-              String formattedDate = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
-              controller.dateController.text = formattedDate;
-            }
-          },
-          child: AbsorbPointer(
-            child: AuthInput(
-              hintText: "Votre Date De Naissance",
-              controller: controller.dateController,
-              validator: (value) => validInput(value!, 1, 50, "name"),
-            ),
-          ),
-        ),
+                GestureDetector(
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    );
+                    if (pickedDate != null) {
+                      String formattedDate = "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                      controller.dateController.text = formattedDate;
+                    }
+                  },
+                  child: AbsorbPointer(
+                    child: AuthInput(
+                      hintText: "Votre Date De Naissance",
+                      controller: controller.dateController,
+                      validator: (value) => validInput(value!, 1, 50, "name"),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 10),
                 // Implement date picker input here
                 const AuthLabel("Numéro de téléphone"),
@@ -149,21 +148,32 @@ class RegisterView extends StatelessWidget {
                   },
                   obscure: !controller.isShowPassword.value,
                 ),
-                const SizedBox(height: 25),
+               const SizedBox(height: 25),
                 Obx(() => PrimaryButton(
-                  name: "Créer Un Compte",
-                  onPressed: () {
-                    controller.register();
-                    Get.toNamed(AppRoute.babysitterphoto);
-                  },
+                  name: "register",
+                  onPressed: ()  {
+                     controller.register();
+                   
+                    },
+                 
                   loading: controller.isLoading.value,
                 )),
+                 const SizedBox(height: 25),
+                // Obx(() => PrimaryButton(
+                //   name: "continuer",
+                //   onPressed: ()  {
+                //   Get.offNamed(AppRoute.espace);
+                   
+                //     },
+                 
+                //   loading: controller.isLoading.value,
+                // )),
                 const SizedBox(height: 15),
                 Align(
                   alignment: Alignment.center,
                   child: GestureDetector(
                     onTap: () {
-                      Get.offNamed(AppRoute.login);
+                      Get.off(LoginScreen());
                     },
                     child: const Text(
                       "Vous avez un compte ? Connectez-vous",

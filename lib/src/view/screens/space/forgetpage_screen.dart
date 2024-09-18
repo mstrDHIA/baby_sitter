@@ -1,3 +1,4 @@
+import 'package:babysitter_v1/src/view/screens/space/forgetpage2_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../core/functions/valid_input.dart';
@@ -48,7 +49,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                   builder: (controller) => PrimaryButton(
                     name: "Envoyer",
                     onPressed: () {
-                      Get.toNamed(AppRoute.forget2);
+                      Get.to(ForgetScreen());
                       
                       if (!controller.isLoading.value) {
                         controller.sendResetPasswordEmail();

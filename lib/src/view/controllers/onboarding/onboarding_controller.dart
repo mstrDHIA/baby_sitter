@@ -1,4 +1,5 @@
 import 'package:babysitter_v1/src/core/constant/app_route.dart';
+import 'package:babysitter_v1/src/view/screens/authentification/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -57,7 +58,7 @@ class OnboardingController extends GetxController {
         curve: Curves.ease,
       );
     } else {
-      Get.offAllNamed(AppRoute.espace);
+      Get.offAll(LoginScreen());
       appCache.setOnboarded(true);
     }
   }

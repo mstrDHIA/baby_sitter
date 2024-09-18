@@ -4,15 +4,13 @@ import 'package:babysitter_v1/src/view/screens/widget/logo_text_card.dart';
 import 'package:babysitter_v1/src/view/screens/widget/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
-
 
 class AjoutBabysitterPhotoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<AjoutPhotobabyController>(
-      init:AjoutPhotobabyController(),
+      init: AjoutPhotobabyController(),
       builder: (controller) {
         return SafeArea(
           child: Scaffold(
@@ -39,34 +37,34 @@ class AjoutBabysitterPhotoScreen extends StatelessWidget {
                       Center(
                         child: LogoTextCard(text: "Caring for Little Smiles!"),
                       ),
-                      GetBuilder<AjoutPhotobabyController>(
-                        builder: (controller) => CircleAvatar(
-                          radius: 80,
-                          backgroundColor: Colors.pink,
-                          child: CircleAvatar(
-                            radius: 75,
-                            backgroundImage: controller.imageUrl != null
-                                ? NetworkImage(controller.imageUrl!)
-                                : null,
-                            child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.pink,
-                                    radius: 25,
-                                    child: InkWell(
-                                      onTap: () => controller.handleUploadImageFromFolder,
-                                      child: const Icon(
-                                        Icons.camera_alt,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
+                      CircleAvatar(
+                        radius: 80,
+                        backgroundColor: Colors.pink,
+                        child: CircleAvatar(
+                          radius: 75,
+                          backgroundImage: controller.image != null
+                              ? FileImage(controller.image!)
+                              : (controller.imageUrl != null
+                                  ? NetworkImage(controller.imageUrl!) as ImageProvider
+                                  : null),
+                          child: Stack(
+                            children: [
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.pink,
+                                  radius: 25,
+                                  child: InkWell(
+                                    onTap: () => controller.handleUploadImageFromFolder(context),
+                                    child: const Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.white,
+                                      size: 20,
                                     ),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -86,13 +84,11 @@ class AjoutBabysitterPhotoScreen extends StatelessWidget {
                   bottom: 20,
                   left: 15,
                   right: 15,
-                  child: GetBuilder<AjoutPhotobabyController>(
-                    builder: (controller) => PrimaryButton(
-                      name: "Étape suivante",
-                      onPressed: () => controller.handleNext,
-                      isSecondary: true,
-                      disabled: controller.isDisabledImport,
-                    ),
+                  child: PrimaryButton(
+                    name: "Étape suivante",
+                    onPressed: () => controller.handleNext(context),
+                    isSecondary: true,
+                    disabled: controller.isDisabledImport,
                   ),
                 ),
               ],

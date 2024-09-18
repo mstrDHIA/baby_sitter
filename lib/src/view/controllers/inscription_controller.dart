@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../../main.dart';
 import '../../core/constant/app_cache.dart';
 import '../../core/functions/show_snack_bar.dart';
 
@@ -41,20 +40,20 @@ class RegisterController extends GetxController {
     isRememberMe.value = !isRememberMe.value;
   }
 
-  void register() {
+  Future<void> register() async {
     if (formKey.currentState!.validate()) {
       if (passwordController.text == confirmPasswordController.text) {
-        signUpWithEmailPassword();
+        await signUpWithEmailPassword();
       } else {
         showSnackbar(
-          context: Get.context!,
+          Get.context!,
           message: "Les mots de passe ne correspondent pas",
           isError: true,
         );
       }
     } else {
       showSnackbar(
-        context: Get.context!,
+        Get.context!,
         message: "Veuillez remplir tous les champs correctement",
         isError: true,
       );
@@ -66,40 +65,49 @@ class RegisterController extends GetxController {
     try {
       final email = emailController.text.trim();
       final password = passwordController.text.trim();
-      final AuthResponse res = await supabase.auth.signUp(
+      final String fullName = "${firstNameController.text.trim()} ${nameController.text.trim()}";
+
+      final AuthResponse res = await Supabase.instance.client.auth.signUp(
         email: email,
         password: password,
+        data: {
+          'name': fullName,
+          'role': 'user',
+          'is_complete_profil': false,
+          'is_verified': false,
+        },
       );
 
       if (res.user != null) {
-        // Set user ID and role in cache
-        appCache.setUid("${res.user!.id}");
+        appCache.setUid(res.user!.id);
         appCache.setRole("user");
 
-        // Additional registration logic, such as navigating to a different page
-        // Get.offAll(() => SomeScreen());
-
-        // Insert additional user information into the database
-        await supabase.from('user').insert({
+        await Supabase.instance.client.from('user').insert({
           'id': res.user!.id,
           'name': nameController.text.trim(),
           'first_name': firstNameController.text.trim(),
-          'Role': 'user',
+          'role': 'user',
           'is_complete_profil': false,
           'is_verified': false,
         });
 
+        Get.offAllNamed('/some-screen');
+
+        showSnackbar(
+          Get.context!,
+          message: "Inscription réussie! Bienvenue ${nameController.text.trim()}",
+        );
       } else {
         showSnackbar(
-          context: Get.context!,
-          message: "Registration failed. Please try again.",
+          Get.context!,
+          message: "L'inscription a échoué. Veuillez réessayer.",
           isError: true,
         );
       }
     } catch (error) {
-      print('Erreur de registration: $error');
+      print('Erreur d\'inscription: $error');
       showSnackbar(
-        context: Get.context!,
+        Get.context!,
         message: "Une erreur s'est produite lors de l'enregistrement",
         isError: true,
       );

@@ -12,7 +12,8 @@ class OnBoardingMiddleware extends GetMiddleware {
   RouteSettings? redirect(String? route) {
     bool isFirstOpen  = AppCache.instance.getOnboarded();   // final onboardingController = Get.put(OnboardingController());
     if (isFirstOpen) {
-      return  RouteSettings(name: AppRoute.espace);
+      return  
+      RouteSettings(name: AppRoute.login);
     } else {
       return null;
     }

@@ -4,6 +4,7 @@ import 'package:babysitter_v1/src/core/constant/app_image.dart';
 import 'package:babysitter_v1/src/core/constant/app_route.dart';
 
 import 'package:babysitter_v1/src/view/controllers/resetpasswordsucess_controller.dart';
+import 'package:babysitter_v1/src/view/screens/space/espace_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../widget/logo_text_card.dart';
@@ -39,7 +40,7 @@ class ResetPasswordSuccessView extends StatelessWidget {
                 const SizedBox(height: 30),
                 PrimaryButton(
                   name: "Envoyer",
-                  onPressed:()=> Get.offAllNamed(AppRoute.espace)
+                  onPressed:()=> Get.offAll(EspaceScreen())
 
                 ),
               ],

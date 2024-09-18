@@ -1,3 +1,4 @@
+import 'package:babysitter_v1/src/view/screens/space/verificationNum_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -66,7 +67,7 @@ class ForgetScreen extends StatelessWidget {
                        // controller.sendResetPasswordSMS();
                         
                      // }
-                      Get.toNamed(AppRoute.verification);
+                      Get.to(VerificationScreen(phoneNumber: ''));
                     },
                   ),
                 ),

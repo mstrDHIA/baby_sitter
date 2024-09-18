@@ -14,6 +14,7 @@ class AuthInput extends StatelessWidget {
     this.readOnly,
     this.maxLines,
     this.isSecond,
+    
   });
 
   final String hintText;
